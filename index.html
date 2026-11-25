@@ -1,0 +1,1013 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>80s and 90s Horror DVD Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Oswald:wght@500;600&display=swap">
+<style>
+/* Layout: a video store shelf. Sticky progress dock on top, breakdown grid, then rows with Seen and Own boxes at the right edge. */
+:root {
+  --bg: #eeedf2;
+  --surface: #f8f7fb;
+  --ink: #1c1824;
+  --muted: #5d5770;
+  --line: #d3cfdd;
+  --seen: #b3262a;
+  --any: var(--ink);
+  --vhs: #8a5a00;
+  --dvd: #1f5fa8;
+  --dig: #1d7a4b;
+  --font-display: "Oswald", "Arial Narrow", Impact, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121018;
+    --surface: #1b1722;
+    --ink: #ece8f3;
+    --muted: #9d96ad;
+    --line: #2f2a3b;
+    --seen: #e5484d;
+    --vhs: #e9b13c;
+    --dvd: #5aa2f0;
+    --dig: #4cc38a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121018;
+  --surface: #1b1722;
+  --ink: #ece8f3;
+  --muted: #9d96ad;
+  --line: #2f2a3b;
+  --seen: #e5484d;
+  --vhs: #e9b13c;
+  --dvd: #5aa2f0;
+  --dig: #4cc38a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+.wrap { --cw: 3.4rem; max-width: 56rem; margin-inline: auto; }
+.hero { padding-block: 40px 20px; }
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 7vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  text-wrap: balance;
+}
+.lede { color: var(--muted); max-width: 40rem; margin: 12px 0 0; }
+
+/* Progress dock */
+.dock {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--bg);
+  padding-block: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.dock-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.meter { min-width: 0; }
+.m-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.m-label {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.m-pct {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.meter.seen .m-pct, .meter.seen .m-label { color: var(--seen); }
+.meter.own .m-pct, .meter.own .m-label { color: var(--any); }
+.bar { height: 8px; background: var(--line); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; transition: width 0.25s ease; }
+.seen .bar i { background: var(--seen); }
+.own .bar i { background: var(--any); }
+.m-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.status { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin: 10px 0 0; min-height: 1em; }
+
+/* Format meters */
+.fmts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.fm { min-width: 0; }
+.fm-top { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.fm-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.fm-pct { font-family: var(--font-mono); font-weight: 500; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.fm .bar { height: 4px; margin-top: 4px; }
+.fm-sub { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
+.fm.vhs .fm-label, .fm.vhs .fm-pct { color: var(--vhs); }
+.fm.vhs .bar i { background: var(--vhs); }
+.fm.dvd .fm-label, .fm.dvd .fm-pct { color: var(--dvd); }
+.fm.dvd .bar i { background: var(--dvd); }
+.fm.dig .fm-label, .fm.dig .fm-pct { color: var(--dig); }
+.fm.dig .bar i { background: var(--dig); }
+
+/* Breakdown */
+.breakdown { padding-block: 20px 8px; }
+.breakdown h2, .sec h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.bd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 10px; margin-top: 12px; }
+.bd {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: pointer;
+  min-width: 0;
+}
+.bd:hover { border-color: var(--muted); }
+.bd:focus-visible, .chip:focus-visible, .search:focus-visible, .chk input:focus-visible { outline: 2px solid var(--seen); outline-offset: 2px; }
+.bd-name { font-weight: 600; font-size: 14px; display: block; }
+.bd-bars { display: grid; gap: 4px; margin-top: 8px; }
+.bd-bars .bar { height: 5px; margin-top: 0; }
+.bd-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 6px; display: block; font-variant-numeric: tabular-nums; }
+
+/* Tools */
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-block: 16px 8px; }
+.search {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 12px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* Sections and rows */
+.sec { margin-top: 28px; }
+.sec-head {
+  display: grid;
+  grid-template-columns: 1fr var(--cw);
+  align-items: end;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+.sec-head .sec-count { font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: block; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.colh { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; color: var(--muted); }
+.colh.s { color: var(--seen); }
+.colh.v { color: var(--vhs); }
+.colh.d { color: var(--dvd); }
+.colh.g { color: var(--dig); }
+.rows { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: grid;
+  grid-template-columns: 3rem 1fr var(--cw);
+  align-items: center;
+  gap: 4px;
+  padding-block: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.row .yr { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.row .ttl { min-width: 0; }
+.row .ttl b { font-weight: 500; display: block; overflow-wrap: anywhere; }
+.row .ttl i { font-style: normal; font-size: 13px; color: var(--muted); display: block; overflow-wrap: anywhere; }
+.row.is-seen .ttl b { color: var(--muted); }
+.chk { display: flex; justify-content: center; }
+.chk input { width: 22px; height: 22px; margin: 0; cursor: pointer; }
+.dash { font: inherit; font-family: var(--font-mono); font-size: 14px; color: var(--muted); background: none; border: 0; border-radius: 4px; width: 22px; height: 22px; padding: 0; cursor: pointer; text-align: center; line-height: 1; }
+.dash:hover { color: var(--ink); background: var(--line); }
+.dash:focus-visible { outline: 2px solid var(--seen); outline-offset: 2px; }
+.chk.have { color: var(--dvd); font-weight: 700; font-size: 18px; }
+.chk.none { color: var(--line); font-size: 18px; }
+.chk.na { color: var(--line); font-family: var(--font-mono); font-size: 14px; cursor: default; }
+.chk.seen input { accent-color: var(--seen); }
+.chk.vhs input { accent-color: var(--vhs); }
+.chk.dvd input { accent-color: var(--dvd); }
+.chk.dig input { accent-color: var(--dig); }
+.group {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 16px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.group span:first-child { font-family: var(--font-display); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+.group span:last-child { font-family: var(--font-mono); font-size: 11px; color: var(--muted); align-self: center; font-variant-numeric: tabular-nums; }
+.empty { color: var(--muted); padding-block: 24px; }
+
+@media (max-width: 520px) {
+  .wrap { --cw: 2.7rem; }
+  .dock-grid { gap: 14px; }
+  .fmts { gap: 10px; }
+  .fm-sub { display: none; }
+  .row { grid-template-columns: 2.2rem 1fr var(--cw); }
+  .colh { font-size: 9.5px; letter-spacing: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">Video store shelf, 1980 to 1999 and the sequels since</p>
+    <h1>80s and 90s Horror DVD Collection</h1>
+    <p class="lede">Every 80s and 90s horror film and the sequels since, and whether I own it on DVD. A dash means no DVD was ever released.</p>
+  </header>
+
+  <div class="dock" role="region" aria-label="Progress">
+    <div class="meter own">
+      <div class="m-top"><span class="m-label">On DVD</span><span class="m-pct" id="pctOwn">0.0%</span></div>
+      <div class="bar"><i id="barOwn"></i></div>
+      <div class="m-sub" id="subOwn">Loading</div>
+    </div>
+    <p class="status" id="status"></p>
+  </div>
+
+  <section class="breakdown" aria-label="Progress by section">
+    <h2>By section</h2>
+    <div class="bd-grid" id="bdGrid"></div>
+  </section>
+
+  <div class="tools">
+    <input class="search" id="search" type="search" placeholder="Search titles, series or years" aria-label="Search films">
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <main id="list"></main>
+</div>
+
+<script>
+(function () {
+  // Format per entry: year|title|optional note
+  var FRANCHISES = [
+    ["Hellraiser", `1987|Hellraiser
+1988|Hellbound: Hellraiser II
+1992|Hellraiser III: Hell on Earth
+1996|Hellraiser: Bloodline
+2000|Hellraiser: Inferno|Direct to video
+2002|Hellraiser: Hellseeker|Direct to video
+2005|Hellraiser: Deader|Direct to video
+2005|Hellraiser: Hellworld|Direct to video
+2011|Hellraiser: Revelations|Direct to video
+2018|Hellraiser: Judgment|Direct to video
+2022|Hellraiser|Reboot`],
+    ["A Nightmare on Elm Street", `1984|A Nightmare on Elm Street
+1985|Part 2: Freddy's Revenge
+1987|Part 3: Dream Warriors
+1988|Part 4: The Dream Master
+1989|Part 5: The Dream Child
+1991|Freddy's Dead: The Final Nightmare
+1994|Wes Craven's New Nightmare
+2010|A Nightmare on Elm Street|Remake. Freddy vs. Jason (2003) is listed under Friday the 13th`],
+    ["Friday the 13th", `1980|Friday the 13th
+1981|Part 2
+1982|Part III
+1984|The Final Chapter
+1985|A New Beginning
+1986|Jason Lives: Part VI
+1988|The New Blood: Part VII
+1989|Jason Takes Manhattan: Part VIII
+1993|Jason Goes to Hell: The Final Friday
+2002|Jason X
+2003|Freddy vs. Jason|Crossover with A Nightmare on Elm Street
+2009|Friday the 13th|Reboot`],
+    ["Halloween", `1981|Halloween II
+1982|Halloween III: Season of the Witch
+1988|Halloween 4: The Return of Michael Myers
+1989|Halloween 5: The Revenge of Michael Myers
+1995|Halloween: The Curse of Michael Myers
+1998|Halloween H20: 20 Years Later
+2002|Halloween: Resurrection
+2007|Halloween|Rob Zombie remake
+2009|Halloween II|Rob Zombie sequel
+2018|Halloween|Direct sequel to the 1978 film
+2021|Halloween Kills
+2022|Halloween Ends`],
+    ["Child's Play", `1988|Child's Play
+1990|Child's Play 2
+1991|Child's Play 3
+1998|Bride of Chucky
+2004|Seed of Chucky
+2013|Curse of Chucky
+2017|Cult of Chucky
+2019|Child's Play|Reboot`],
+    ["Texas Chain Saw Massacre", `1986|The Texas Chain Saw Massacre Part 2
+1990|Leatherface: The Texas Chainsaw Massacre III
+1995|The Return of the Texas Chainsaw Massacre|Also released as The Next Generation
+2003|The Texas Chainsaw Massacre|Remake
+2006|The Texas Chainsaw Massacre: The Beginning|Prequel to the 2003 remake
+2013|Texas Chainsaw 3D
+2017|Leatherface|Origin story
+2022|Texas Chainsaw Massacre|Netflix legacy sequel`],
+    ["Evil Dead", `1981|The Evil Dead
+1987|Evil Dead II
+1992|Army of Darkness
+2013|Evil Dead|Remake
+2023|Evil Dead Rise
+2026|Evil Dead Burn`],
+    ["Poltergeist", `1982|Poltergeist
+1986|Poltergeist II: The Other Side
+1988|Poltergeist III
+2015|Poltergeist|Remake`],
+    ["Candyman", `1992|Candyman
+1995|Candyman: Farewell to the Flesh
+1999|Candyman: Day of the Dead
+2021|Candyman|Legacy sequel`],
+    ["Scream", `1996|Scream
+1997|Scream 2
+2000|Scream 3
+2011|Scream 4
+2022|Scream|Fifth film
+2023|Scream VI
+2026|Scream 7`],
+    ["I Know What You Did Last Summer", `1997|I Know What You Did Last Summer
+1998|I Still Know What You Did Last Summer
+2006|I'll Always Know What You Did Last Summer|Direct to video
+2025|I Know What You Did Last Summer|Legacy sequel`],
+    ["Phantasm", `1988|Phantasm II
+1994|Phantasm III: Lord of the Dead
+1998|Phantasm IV: Oblivion
+2016|Phantasm: Ravager`],
+    ["The Return of the Living Dead", `1985|The Return of the Living Dead
+1988|Part II
+1993|Part 3
+2005|Return of the Living Dead: Necropolis
+2005|Return of the Living Dead: Rave to the Grave`],
+    ["Dead films from George Romero", `1985|Day of the Dead
+1990|Night of the Living Dead|Remake
+2004|Dawn of the Dead|Remake
+2005|Land of the Dead
+2006|Night of the Living Dead 3D|Remake
+2007|Diary of the Dead
+2008|Day of the Dead|Remake
+2009|Survival of the Dead
+2012|Night of the Living Dead 3D: Re-Animation|Sequel to the 2006 remake
+2018|Day of the Dead: Bloodline|Remake`],
+    ["Re-Animator", `1985|Re-Animator
+1990|Bride of Re-Animator
+2003|Beyond Re-Animator`],
+    ["Pet Sematary", `1989|Pet Sematary
+1992|Pet Sematary Two
+2019|Pet Sematary|Remake
+2023|Pet Sematary: Bloodlines|Prequel`],
+    ["The Fly", `1986|The Fly
+1989|The Fly II`],
+    ["Psycho", `1983|Psycho II
+1986|Psycho III
+1990|Psycho IV: The Beginning
+1998|Psycho|Remake`],
+    ["The Omen and The Exorcist", `1981|The Omen: The Final Conflict
+1990|The Exorcist III
+1991|Omen IV: The Awakening
+2004|Exorcist: The Beginning
+2005|Dominion: Prequel to the Exorcist
+2006|The Omen|Remake
+2023|The Exorcist: Believer
+2024|The First Omen|Prequel`],
+    ["Puppet Master", `1989|Puppet Master
+1990|Part II
+1991|Part III: Toulon's Revenge
+1993|Puppet Master 4
+1994|Puppet Master 5: The Final Chapter
+1998|Curse of the Puppet Master
+1999|Retro Puppet Master
+2003|Puppet Master: The Legacy|Mostly clips from earlier films
+2004|Puppet Master vs Demonic Toys|Crossover
+2010|Puppet Master: Axis of Evil
+2012|Puppet Master X: Axis Rising
+2017|Puppet Master: Axis Termination
+2018|Puppet Master: The Littlest Reich|Reboot
+2020|Blade: The Iron Cross|Puppet Master spin off
+2022|Puppet Master: Doktor Death|Spin off`],
+    ["The Howling", `1981|The Howling
+1985|Howling II
+1987|Howling III
+1988|Howling IV
+1989|Howling V
+1991|Howling VI
+1995|Howling: New Moon Rising
+2011|The Howling: Reborn`],
+    ["Silent Night, Deadly Night", `1984|Silent Night, Deadly Night
+1987|Part 2
+1989|Part 3: Better Watch Out!
+1990|Part 4: Initiation
+1991|Part 5: The Toy Maker
+2012|Silent Night|Loose remake
+2025|Silent Night, Deadly Night|Remake`],
+    ["Sleepaway Camp", `1983|Sleepaway Camp
+1988|II: Unhappy Campers
+1989|III: Teenage Wasteland
+2008|Return to Sleepaway Camp
+2012|Sleepaway Camp IV: The Survivor|Shot in 1991, released in 2012`],
+    ["Children of the Corn", `1984|Children of the Corn
+1993|II: The Final Sacrifice
+1995|III: Urban Harvest
+1996|IV: The Gathering
+1998|V: Fields of Terror
+1999|666: Isaac's Return
+2001|Children of the Corn: Revelation
+2009|Children of the Corn|Remake made for TV
+2011|Children of the Corn: Genesis
+2018|Children of the Corn: Runaway
+2020|Children of the Corn|Reboot`],
+    ["Leprechaun", `1993|Leprechaun
+1994|Leprechaun 2
+1995|Leprechaun 3
+1997|Leprechaun 4: In Space
+2000|Leprechaun in the Hood
+2003|Leprechaun: Back 2 tha Hood
+2014|Leprechaun: Origins|Reboot
+2018|Leprechaun Returns|Sequel to the 1993 film`],
+    ["Critters", `1986|Critters
+1988|Critters 2
+1991|Critters 3
+1992|Critters 4
+2019|Critters Attack!`],
+    ["Gremlins", `1984|Gremlins
+1990|Gremlins 2: The New Batch`],
+    ["Ghoulies", `1985|Ghoulies
+1988|Ghoulies II
+1991|Ghoulies III: Ghoulies Go to College
+1994|Ghoulies IV`],
+    ["Fright Night", `1985|Fright Night
+1988|Fright Night Part 2
+2011|Fright Night|Remake
+2013|Fright Night 2: New Blood|Direct to video`],
+    ["Pumpkinhead", `1988|Pumpkinhead
+1994|Pumpkinhead II: Blood Wings
+2006|Pumpkinhead: Ashes to Ashes|TV movie
+2007|Pumpkinhead: Blood Feud|TV movie`],
+    ["Waxwork", `1988|Waxwork
+1992|Waxwork II: Lost in Time`],
+    ["Basket Case", `1982|Basket Case
+1990|Basket Case 2
+1992|Basket Case 3: The Progeny`],
+    ["Maniac Cop", `1988|Maniac Cop
+1990|Maniac Cop 2
+1993|Maniac Cop 3: Badge of Silence`],
+    ["Prom Night", `1980|Prom Night
+1987|Hello Mary Lou: Prom Night II
+1990|Prom Night III: The Last Kiss
+1992|Prom Night IV: Deliver Us from Evil
+2008|Prom Night|Remake`],
+    ["Night of the Demons", `1988|Night of the Demons
+1994|Night of the Demons 2
+1997|Night of the Demons 3
+2009|Night of the Demons|Remake`],
+    ["Demons", `1985|Demons
+1986|Demons 2`],
+    ["Amityville", `1982|Amityville II: The Possession
+1983|Amityville 3D
+1989|Amityville: The Evil Escapes
+1990|The Amityville Curse
+1992|Amityville 1992: It's About Time
+1993|Amityville: A New Generation
+1996|Amityville Dollhouse
+2005|The Amityville Horror|Remake of the 1979 film
+2017|Amityville: The Awakening|Reboot`],
+    ["Wishmaster", `1997|Wishmaster
+1999|Wishmaster 2: Evil Never Dies
+2001|Wishmaster 3: Beyond the Gates of Hell
+2002|Wishmaster 4: The Prophecy Fulfilled`]
+  ];
+
+  // Series that grew out of standalone 80s and 90s films.
+  var MORE = [
+    ["Alien", `1986|Aliens
+1992|Alien 3
+1997|Alien: Resurrection
+2004|Alien vs. Predator|Crossover
+2007|Aliens vs. Predator: Requiem|Crossover
+2012|Prometheus
+2017|Alien: Covenant
+2024|Alien: Romulus`],
+    ["Tremors", `1990|Tremors
+1996|Tremors 2: Aftershocks
+2001|Tremors 3: Back to Perfection
+2004|Tremors 4: The Legend Begins
+2015|Tremors 5: Bloodlines
+2018|Tremors: A Cold Day in Hell
+2020|Tremors: Shrieker Island`],
+    ["Blade", `1998|Blade
+2002|Blade II
+2004|Blade: Trinity`],
+    ["The Crow", `1994|The Crow
+1996|The Crow: City of Angels
+2000|The Crow: Salvation
+2005|The Crow: Wicked Prayer
+2024|The Crow|Reboot`],
+    ["Urban Legend", `1998|Urban Legend
+2000|Urban Legends: Final Cut
+2005|Urban Legends: Bloody Mary|Direct to video`],
+    ["The Lost Boys", `1987|The Lost Boys
+2008|Lost Boys: The Tribe|Direct to video
+2010|Lost Boys: The Thirst|Direct to video`],
+    ["The Toxic Avenger", `1984|The Toxic Avenger
+1989|The Toxic Avenger Part II
+1989|The Toxic Avenger Part III: The Last Temptation of Toxie
+2000|Citizen Toxie: The Toxic Avenger IV
+2025|The Toxic Avenger|Reboot, US release in 2025`],
+    ["Beetlejuice", `1988|Beetlejuice
+2024|Beetlejuice Beetlejuice`],
+    ["Creepshow", `1982|Creepshow
+1987|Creepshow 2
+2006|Creepshow 3|Direct to video`],
+    ["Scanners", `1981|Scanners
+1991|Scanners II: The New Order
+1992|Scanners III: The Takeover
+1994|Scanner Cop
+1995|Scanner Cop II
+2007|Scanners: The Showdown`],
+    ["Subspecies", `1991|Subspecies
+1993|Bloodstone: Subspecies II
+1994|Bloodlust: Subspecies III
+1997|Vampire Journals|Spin off
+1998|Subspecies 4: Bloodstorm
+2023|Subspecies V: Blood Rise`],
+    ["The Prophecy", `1995|The Prophecy
+1998|The Prophecy II
+2000|The Prophecy 3: The Ascent
+2005|The Prophecy: Uprising
+2005|The Prophecy: Forsaken`],
+    ["Cube", `1997|Cube
+2002|Cube 2: Hypercube
+2004|Cube Zero
+2021|Cube|Japanese remake`],
+    ["Ringu and The Ring", `1998|Ringu|Japanese
+1998|Spiral|Japanese. Also called Rasen
+1999|Ring 2|Japanese
+1999|The Ring Virus|South Korean remake
+2000|Ring 0: Birthday|Japanese prequel
+2002|The Ring|American remake
+2005|The Ring Two|American
+2012|Sadako 3D|Japanese
+2013|Sadako 3D 2|Japanese
+2016|Sadako vs. Kayako|Japanese crossover
+2017|Rings|American
+2019|Sadako|Japanese
+2022|Sadako DX|Japanese`],
+    ["Mimic", `1997|Mimic
+2001|Mimic 2
+2003|Mimic: Sentinel`],
+    ["Anaconda", `1997|Anaconda
+2004|Anacondas: The Hunt for the Blood Orchid
+2008|Anaconda 3: Offspring
+2009|Anacondas: Trail of Blood
+2025|Anaconda|Comedy reboot`],
+    ["Lake Placid", `1999|Lake Placid
+2007|Lake Placid 2
+2010|Lake Placid 3
+2012|Lake Placid: The Final Chapter
+2015|Lake Placid vs. Anaconda|Crossover
+2018|Lake Placid: Legacy`],
+    ["Deep Blue Sea", `1999|Deep Blue Sea
+2018|Deep Blue Sea 2
+2020|Deep Blue Sea 3`],
+    ["The Blair Witch Project", `1999|The Blair Witch Project
+2000|Book of Shadows: Blair Witch 2
+2016|Blair Witch`],
+    ["The Craft", `1996|The Craft
+2020|The Craft: Legacy`],
+    ["Darkman", `1990|Darkman
+1995|Darkman II: The Return of Durant|Direct to video
+1996|Darkman III: Die Darkman Die|Direct to video`],
+    ["From Dusk Till Dawn", `1996|From Dusk Till Dawn
+1999|From Dusk Till Dawn 2: Texas Blood Money|Direct to video
+2000|From Dusk Till Dawn 3: The Hangman's Daughter|Direct to video`],
+    ["Hannibal Lecter", `1986|Manhunter|First Lecter film
+1991|The Silence of the Lambs
+2001|Hannibal
+2002|Red Dragon
+2007|Hannibal Rising`],
+    ["The Shining", `1980|The Shining
+2019|Doctor Sleep|Sequel`],
+    ["The Thing", `1982|The Thing
+2011|The Thing|Prequel`],
+    ["Firestarter", `1984|Firestarter
+2022|Firestarter|Remake`],
+    ["An American Werewolf", `1981|An American Werewolf in London
+1997|An American Werewolf in Paris`],
+    ["Warlock", `1989|Warlock
+1993|Warlock: The Armageddon
+1999|Warlock III: The End of Innocence`],
+    ["The Gate", `1987|The Gate
+1990|The Gate II: Trespassers`],
+    ["House", `1986|House
+1987|House II: The Second Story
+1989|The Horror Show|Also released as House III
+1992|House IV`],
+    ["Witchboard", `1986|Witchboard
+1993|Witchboard 2: The Devil's Doorbell
+1995|Witchboard III: The Possession`],
+    ["Slumber Party Massacre", `1982|The Slumber Party Massacre
+1987|Slumber Party Massacre II
+1990|Slumber Party Massacre III
+2021|Slumber Party Massacre|Reboot`],
+    ["Xtro", `1982|Xtro
+1990|Xtro II: The Second Encounter
+1995|Xtro 3: Watch the Skies`],
+    ["Carnosaur", `1993|Carnosaur
+1995|Carnosaur 2
+1996|Carnosaur 3: Primal Species`],
+    ["The Mummy", `1999|The Mummy
+2001|The Mummy Returns
+2008|The Mummy: Tomb of the Dragon Emperor`],
+    ["My Bloody Valentine", `1981|My Bloody Valentine
+2009|My Bloody Valentine 3D|Remake`],
+    ["April Fool's Day", `1986|April Fool's Day
+2008|April Fool's Day|Remake`],
+    ["The Fog", `1980|The Fog
+2005|The Fog|Remake`],
+    ["Maniac", `1980|Maniac
+2012|Maniac|Remake`],
+    ["The Hills Have Eyes", `1984|The Hills Have Eyes Part II|Sequel to the 1977 original
+2006|The Hills Have Eyes|Remake of the 1977 film
+2007|The Hills Have Eyes 2|Sequel to the 2006 remake`],
+    ["Vampires", `1998|John Carpenter's Vampires
+2002|Vampires: Los Muertos
+2005|Vampires: The Turning`],
+    ["Interview with the Vampire", `1994|Interview with the Vampire
+2002|Queen of the Damned`],
+    ["Henry: Portrait of a Serial Killer", `1990|Henry: Portrait of a Serial Killer|Filmed in 1986, released in 1990
+1996|Henry: Portrait of a Serial Killer, Part II`],
+    ["976 Evil", `1988|976 Evil
+1992|976-EVIL 2`],
+    ["C.H.U.D.", `1984|C.H.U.D.
+1989|C.H.U.D. II: Bud the Chud`],
+    ["The Hidden", `1987|The Hidden
+1993|The Hidden II`],
+    ["Swamp Thing", `1982|Swamp Thing
+1989|The Return of Swamp Thing`],
+    ["Tales from the Hood", `1995|Tales from the Hood
+2018|Tales from the Hood 2
+2020|Tales from the Hood 3`],
+    ["The Dentist", `1996|The Dentist
+1998|The Dentist 2`],
+    ["Stir of Echoes", `1999|Stir of Echoes
+2007|Stir of Echoes: The Homecoming`],
+    ["House on Haunted Hill", `1999|House on Haunted Hill
+2007|Return to House on Haunted Hill`],
+    ["Bats", `1999|Bats
+2007|Bats: Human Terror`],
+    ["The Mangler", `1995|The Mangler
+2002|The Mangler 2
+2005|The Mangler Reborn`],
+    ["Castle Freak", `1995|Castle Freak
+2020|Castle Freak|Remake`],
+    ["Jacob's Ladder", `1990|Jacob's Ladder
+2019|Jacob's Ladder|Remake`],
+    ["Flatliners", `1990|Flatliners
+2017|Flatliners|Sequel`],
+    ["The Witches", `1990|The Witches
+2020|The Witches|Remake`],
+    ["Funny Games", `1997|Funny Games
+2007|Funny Games|American remake by the same director`],
+    ["Carrie", `1999|The Rage: Carrie 2|Sequel to the 1976 film
+2013|Carrie|Remake of the 1976 film`]
+  ];
+
+  var STANDALONE = [
+    { key: "s80a", title: "Standalone, 1980 to 1984", lines: `1980|Motel Hell|Farmer turns his guests into smoked meat
+1980|The Changeling|Quiet, serious haunted house film
+1980|Cannibal Holocaust|Italian shocker that became infamous
+1980|Terror Train|Slasher on a college party train
+1980|He Knows You're Alone|Early stalker slasher
+1980|Inferno|Argento's witch film
+1980|City of the Living Dead|Fulci opens a gate to hell
+1980|Humanoids from the Deep|Sea monsters attack a fishing town
+1981|The Burning|Camp slasher with shears
+1981|Happy Birthday to Me|Slasher with a twist ending
+1981|Ghost Story|Old men and a haunting past
+1981|Wolfen|Urban wolves stalk New York
+1981|Hell Night|Fraternity initiation in a mansion
+1981|The Beyond|Fulci's Louisiana hotel of hell
+1981|Possession|Polish divorce turns monstrous
+1981|The Funhouse|Carnival slasher
+1981|Dead and Buried|Small town with a secret
+1981|Evilspeak|Outcast student summons Satan by computer
+1982|Cat People|Erotic remake of the 1942 film
+1982|Pieces|Chainsaw slasher cult favorite
+1982|Q: The Winged Serpent|Aztec dragon over Manhattan
+1982|Tenebrae|Argento giallo about a novelist
+1982|The Entity|Haunting based on a case file
+1983|Videodrome|Cronenberg on TV signals and flesh
+1983|The Dead Zone|Stephen King psychic thriller
+1983|Cujo|Rabid St. Bernard siege
+1983|Christine|Carpenter's possessed Plymouth Fury
+1983|Twilight Zone: The Movie|Four directors, four tales
+1983|The Hunger|Vampire film with Bowie and Deneuve
+1983|The House on Sorority Row|Prank gone wrong slasher
+1983|Curtains|Actress audition slasher
+1983|The Keep|Nazis wake something in a Romanian fortress
+1984|The Company of Wolves|Fairy tale werewolf dream
+1984|Night of the Comet|Valley girls survive a zombie apocalypse
+1984|Dreamscape|Psychic dream invasion
+1984|Razorback|Australian giant boar` },
+    { key: "s80b", title: "Standalone, 1985 to 1989", lines: `1985|Lifeforce|Space vampires loose in London
+1985|The Stuff|Killer dessert satire
+1985|Silver Bullet|Stephen King werewolf in a small town
+1985|Cat's Eye|King anthology with a killer troll
+1985|Phenomena|Argento's insect whispering heroine
+1986|From Beyond|Stuart Gordon's pineal gland nightmare
+1986|Night of the Creeps|Alien slugs and 50s B movie love
+1986|Chopping Mall|Security robots turn on teens
+1986|Maximum Overdrive|King directs killer machines
+1986|Trick or Treat|Heavy metal ghost story
+1986|Troll|Goblin in a San Francisco apartment
+1986|Deadly Friend|Teen brings a robot girl back to life
+1986|Vamp|Strip club full of vampires
+1986|Rawhead Rex|Clive Barker's monster in the countryside
+1987|Near Dark|Western style vampire road film
+1987|Prince of Darkness|Carpenter's liquid evil in a church
+1987|Street Trash|Toxic booze melts the homeless
+1987|The Monster Squad|Kids versus the classic monsters
+1987|The Believers|Voodoo thriller
+1987|Bad Taste|Peter Jackson's alien cannibal debut
+1987|Dolls|Stuart Gordon's killer toys
+1987|Angel Heart|Noir detective with a devilish twist
+1987|Opera|Argento's needles taped under the eyes
+1987|Blood Diner|Gory cult comedy
+1988|The Blob|Gory remake of the 1958 classic
+1988|Dead Ringers|Cronenberg's twin gynecologists
+1988|The Serpent and the Rainbow|Wes Craven on Haitian zombification
+1988|Pin|Quiet, creepy anatomy dummy story
+1988|The Unholy|Demon haunts a New Orleans church
+1988|Killer Klowns from Outer Space|Circus aliens with cotton candy cocoons
+1988|Dream Demon|British nightmare thriller
+1988|Scarecrows|Cheap, nasty and beloved
+1989|Society|Body horror and class satire
+1989|Parents|Suburban cannibal 50s nightmare
+1989|Shocker|Wes Craven's electrocuted killer
+1989|Leviathan|Deep sea mining station monster
+1989|Deepstar Six|Undersea base under attack
+1989|The Phantom of the Opera|Robert Englund as the Phantom` },
+    { key: "s90a", title: "Standalone, 1990 to 1994", lines: `1990|Misery|Kathy Bates and a sledgehammer
+1990|Nightbreed|Clive Barker's city of monsters
+1990|Arachnophobia|Spiders invade a small town
+1990|Tales from the Darkside: The Movie|Anthology with a hit man and a gargoyle
+1990|Frankenhooker|Mad scientist rebuilds his fiancee
+1990|Graveyard Shift|Stephen King rats in a textile mill
+1990|Hardware|Cyberpunk killer robot
+1990|Troll 2|The famous goblins versus vegetarians cult film
+1991|The People Under the Stairs|Wes Craven's landlord horror satire
+1991|Popcorn|Slasher at a movie marathon
+1991|Body Parts|Transplanted hands with their own will
+1991|The Resurrected|Lovecraft's Charles Dexter Ward
+1991|Highway to Hell|Road trip to the underworld
+1992|Bram Stoker's Dracula|Coppola's lavish gothic romance
+1992|Dead Alive|Peter Jackson's splatter peak, also called Braindead
+1992|Sleepwalkers|Stephen King shapeshifting cat creatures
+1992|Dr. Giggles|Killer doctor with a punchline
+1992|Innocent Blood|Vampire gangster comedy
+1992|Dust Devil|Desert slasher with a shapeshifter
+1992|Buffy the Vampire Slayer|Cheerleader slays vampires
+1993|Cronos|Guillermo del Toro's debut
+1993|The Dark Half|Romero directs a Stephen King author haunted by his pen name
+1993|Body Snatchers|Military base pod invasion
+1993|Needful Things|Devil runs a shop in Castle Rock
+1993|Man's Best Friend|Genetically altered guard dog
+1993|Ticks|Mutant ticks in a forest
+1993|Trauma|Dario Argento's headless killer
+1993|The Nightmare Before Christmas|Stop motion Halloween musical
+1994|In the Mouth of Madness|Carpenter's Lovecraft homage
+1994|Mary Shelley's Frankenstein|Branagh's faithful take
+1994|Wolf|Jack Nicholson's werewolf drama
+1994|Cemetery Man|Italian zombie cult film also called Dellamorte Dellamore
+1994|Brainscan|Teen plays a horror video game that kills` },
+    { key: "s90b", title: "Standalone, 1995 to 1999", lines: `1995|Se7en|Serial killer built on the seven sins
+1995|Lord of Illusions|Clive Barker's occult noir
+1995|Tales from the Crypt: Demon Knight|Siege in a New Mexico motel
+1995|Village of the Damned|Carpenter remake with creepy kids
+1995|Vampire in Brooklyn|Eddie Murphy and Wes Craven
+1995|The Addiction|Black and white vampire philosophy
+1996|The Frighteners|Peter Jackson and Michael J. Fox
+1996|Thinner|Stephen King curse
+1996|Bad Moon|Werewolf and a family dog
+1996|Bordello of Blood|Tales from the Crypt vampire brothel
+1996|The Island of Dr. Moreau|Troubled Brando adaptation
+1997|Event Horizon|Haunted spaceship from hell
+1997|The Relic|Museum monster
+1997|Cure|Japanese hypnosis thriller
+1997|Perfect Blue|Anime psychological horror
+1997|The Devil's Advocate|Reeves and Pacino, law firm of hell
+1997|Jack Frost|Killer snowman
+1998|The Faculty|Teen alien body snatchers
+1998|Disturbing Behavior|Perfect teens in Cradle Bay
+1998|Phantoms|Whole town missing
+1998|Deep Rising|Sea monster attacks a cruise ship
+1999|The Sixth Sense|Ghost story with the famous twist
+1999|Sleepy Hollow|Burton's gothic headless horseman
+1999|The Haunting|Big budget remake of the 1963 classic
+1999|Idle Hands|Possessed hand slasher comedy
+1999|Ravenous|Cannibal western
+1999|Audition|Takashi Miike's slow burn shocker
+1999|Stigmata|Possession thriller with Patricia Arquette
+1999|End of Days|Schwarzenegger versus the devil
+1999|eXistenZ|Cronenberg's video game body horror` }
+  ];
+
+  function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, ""); }
+
+  // Build the item list and the section structure.
+  var items = [];
+  var sections = [];
+
+  function addSeries(sec, list, prefix) {
+    list.forEach(function (f) {
+      var g = { name: f[0], items: [] };
+      f[1].split("\n").forEach(function (line) {
+        var p = line.split("|");
+        var it = { id: slug(prefix + " " + f[0] + " " + p[0] + " " + p[1]), year: +p[0], title: p[1], note: p[2] || "", group: f[0], sec: sec };
+        g.items.push(it); items.push(it);
+      });
+      sec.groups.push(g);
+    });
+    sections.push(sec);
+  }
+  addSeries({ key: "fr", title: "Franchises", blurb: "Series entries in release order, through today", groups: [] }, FRANCHISES, "fr");
+  addSeries({ key: "more", title: "More series", blurb: "Series that grew out of 80s and 90s films, through today", groups: [] }, MORE, "more");
+
+  STANDALONE.forEach(function (s) {
+    var sec = { key: s.key, title: s.title, blurb: "", groups: [{ name: "", items: [] }] };
+    s.lines.split("\n").forEach(function (line) {
+      var p = line.split("|");
+      var it = { id: slug(s.key + " " + p[0] + " " + p[1]), year: +p[0], title: p[1], note: p[2] || "", group: "", sec: sec };
+      sec.groups[0].items.push(it); items.push(it);
+    });
+    sections.push(sec);
+  });
+
+
+  // State
+  var have = {}, noDvd = {}, loaded = false;
+  var filter = "all", query = "";
+  function $(id) { return document.getElementById(id); }
+  function pct(n, d) { return d ? (n * 100 / d).toFixed(1) + "%" : "0.0%"; }
+  function setStatus(t) { $("status").textContent = t; }
+  function released(it) { return !noDvd[it.id]; }
+
+  var rowEls = {}, secEls = [];
+
+  function build() {
+    var list = $("list");
+    sections.forEach(function (sec) {
+      var s = document.createElement("section"); s.className = "sec"; s.id = "sec-" + sec.key;
+      var head = document.createElement("div"); head.className = "sec-head";
+      var hl = document.createElement("div");
+      var h2 = document.createElement("h2"); h2.textContent = sec.title;
+      var cnt = document.createElement("span"); cnt.className = "sec-count";
+      hl.appendChild(h2); hl.appendChild(cnt); head.appendChild(hl);
+      var c = document.createElement("span"); c.className = "colh d"; c.textContent = "DVD"; head.appendChild(c);
+      s.appendChild(head);
+      var ol = document.createElement("ol"); ol.className = "rows";
+      var secRec = { sec: sec, el: s, cnt: cnt, groups: [] };
+      sec.groups.forEach(function (g) {
+        var grec = { g: g, header: null, cnt: null };
+        if (g.name) {
+          var gh = document.createElement("li"); gh.className = "group";
+          var a = document.createElement("span"); a.textContent = g.name;
+          var b2 = document.createElement("span");
+          gh.appendChild(a); gh.appendChild(b2); ol.appendChild(gh);
+          grec.header = gh; grec.cnt = b2;
+        }
+        g.items.forEach(function (it) {
+          var li = document.createElement("li"); li.className = "row";
+          var yr = document.createElement("span"); yr.className = "yr"; yr.textContent = it.year;
+          var ttl = document.createElement("span"); ttl.className = "ttl";
+          var b1 = document.createElement("b"); b1.textContent = it.title; ttl.appendChild(b1);
+          if (it.note) { var i1 = document.createElement("i"); i1.textContent = it.note; ttl.appendChild(i1); }
+          var cell = document.createElement("span"); cell.className = "chk";
+          li.appendChild(yr); li.appendChild(ttl); li.appendChild(cell);
+          ol.appendChild(li);
+          rowEls[it.id] = { li: li, cell: cell };
+        });
+        secRec.groups.push(grec);
+      });
+      s.appendChild(ol);
+      var empty = document.createElement("p"); empty.className = "empty"; empty.textContent = "No films match that filter in this section."; empty.hidden = true;
+      s.appendChild(empty); secRec.empty = empty;
+      list.appendChild(s); secEls.push(secRec);
+    });
+    var grid = $("bdGrid");
+    secEls.forEach(function (sr) {
+      var btn = document.createElement("button"); btn.type = "button"; btn.className = "bd";
+      var nm = document.createElement("span"); nm.className = "bd-name"; nm.textContent = sr.sec.title;
+      var bars = document.createElement("span"); bars.className = "bd-bars";
+      var m = document.createElement("span"); m.className = "own"; var bb = document.createElement("span"); bb.className = "bar"; var f = document.createElement("i"); bb.appendChild(f); m.appendChild(bb); bars.appendChild(m);
+      var ct = document.createElement("span"); ct.className = "bd-count";
+      btn.appendChild(nm); btn.appendChild(bars); btn.appendChild(ct);
+      btn.addEventListener("click", function () { sr.el.scrollIntoView({ behavior: "smooth", block: "start" }); });
+      grid.appendChild(btn); sr.bd = { f: f, ct: ct };
+    });
+    var chips = [["all", "All"], ["have", "Have on DVD"], ["missing", "Missing"], ["nodvd", "No DVD released"]];
+    var chipBox = $("chips");
+    chips.forEach(function (c) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = c[1];
+      b.setAttribute("aria-pressed", c[0] === filter ? "true" : "false");
+      b.addEventListener("click", function () {
+        filter = c[0];
+        Array.prototype.forEach.call(chipBox.children, function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true"); applyFilter();
+      });
+      chipBox.appendChild(b);
+    });
+    $("search").addEventListener("input", function (e) { query = e.target.value.trim().toLowerCase(); applyFilter(); });
+  }
+
+  function matches(it) {
+    if (filter === "have" && !have[it.id]) return false;
+    if (filter === "missing" && (have[it.id] || !released(it))) return false;
+    if (filter === "nodvd" && released(it)) return false;
+    if (query && (it.title + " " + it.note + " " + it.group + " " + it.year).toLowerCase().indexOf(query) === -1) return false;
+    return true;
+  }
+  function applyFilter() {
+    secEls.forEach(function (sr) {
+      var any = false;
+      sr.groups.forEach(function (gr) {
+        var gAny = false;
+        gr.g.items.forEach(function (it) { var show = matches(it); rowEls[it.id].li.hidden = !show; if (show) gAny = true; });
+        if (gr.header) gr.header.hidden = !gAny;
+        if (gAny) any = true;
+      });
+      sr.empty.hidden = any;
+    });
+  }
+  function render() {
+    var nRel = 0, nHave = 0;
+    items.forEach(function (it) {
+      var cell = rowEls[it.id].cell;
+      if (!released(it)) { cell.className = "chk none"; cell.textContent = "–"; cell.title = "No DVD released"; }
+      else if (have[it.id]) { cell.className = "chk have"; cell.textContent = "✓"; cell.title = "Have on DVD"; nHave++; nRel++; }
+      else { cell.className = "chk none"; cell.textContent = "·"; cell.title = "Not owned yet"; nRel++; }
+    });
+    $("pctOwn").textContent = pct(nHave, nRel);
+    $("barOwn").style.width = (nRel ? nHave * 100 / nRel : 0) + "%";
+    $("subOwn").textContent = nHave + " of " + nRel + " films released on DVD";
+    secEls.forEach(function (sr) {
+      var h = 0, r = 0;
+      sr.groups.forEach(function (gr) {
+        var gh = 0, gr2 = 0;
+        gr.g.items.forEach(function (it) { if (released(it)) { gr2++; r++; if (have[it.id]) { gh++; h++; } } });
+        if (gr.cnt) gr.cnt.textContent = gh + " of " + gr2 + " on DVD";
+      });
+      sr.cnt.textContent = h + " of " + r + " on DVD";
+      sr.bd.f.style.width = (r ? h * 100 / r : 0) + "%";
+      sr.bd.ct.textContent = h + " of " + r + " on DVD";
+    });
+    applyFilter();
+  }
+
+  build(); render();
+  fetch("ticks.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+    (d.dvd || []).forEach(function (id) { have[id] = 1; });
+    (d.nodvd || []).forEach(function (id) { noDvd[id] = 1; });
+    render(); setStatus(d.updated ? "Last updated " + d.updated : "");
+  }).catch(function () { setStatus("Could not load ticks.json, so nothing shows as owned yet."); });
+})();
+</script>
